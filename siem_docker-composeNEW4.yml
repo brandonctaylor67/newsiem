@@ -1,8 +1,7 @@
 version: '3.3'
 services:
-services:
   elasticsearch:
-    image: wazuh/wazuh-elasticsearch:3.9.1_6.8.0
+    image: wazuh/wazuh-elasticsearch:3.9.2_6.8.0
     environment:
       cluster.name: '55191-14396'
       ES_JAVA_OPTS: '-Xms1g -Xmx1g'
@@ -31,7 +30,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 10
-
   logstash:
     image: docker.elastic.co/logstash/logstash:6.8.0
     environment:
@@ -159,7 +157,7 @@ services:
     networks:
       - siem
   wazuh:
-    image: wazuh/wazuh:3.13.1_7.8.0
+    image: wazuh/wazuh:3.9.2_6.8.0
     hostname: wazuh-manager
     restart: always
     ports:
@@ -167,9 +165,11 @@ services:
       - "1515:1515"
       - "514:514/udp"
       - "55000:55000"
+    networks:
+      - siem
 
   kibana:
-    image: wazuh/wazuh-kibana:3.13.1_7.8.0
+    image: wazuh/wazuh-kibana:3.9.2_6.8.0
     hostname: kibana
     restart: always
     depends_on:
@@ -177,9 +177,11 @@ services:
     links:
       - elasticsearch:elasticsearch
       - wazuh:wazuh
+    networks:
+      - siem
 
   nginx:
-    image: wazuh/wazuh-nginx:3.13.1_7.8.0
+    image: wazuh/wazuh-nginx:3.9.2_6.8.0
     hostname: nginx
     restart: always
     environment:
@@ -192,6 +194,8 @@ services:
       - kibana
     links:
       - kibana:kibana
+    networks:
+      - siem
 networks:
   siem:
     external: true
