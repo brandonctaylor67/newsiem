@@ -136,22 +136,6 @@ services:
       - "514:514/udp"
       - "55000:55000"
 
-  elasticsearch:
-    image: wazuh/wazuh-elasticsearch:3.13.1_7.8.0
-    hostname: elasticsearch
-    restart: always
-    ports:
-      - "9200:9200"
-    environment:
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
-      - ELASTIC_CLUSTER=true
-      - CLUSTER_NODE_MASTER=true
-      - CLUSTER_MASTER_NODE_NAME=es01
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-
   kibana:
     image: wazuh/wazuh-kibana:3.13.1_7.8.0
     hostname: kibana
